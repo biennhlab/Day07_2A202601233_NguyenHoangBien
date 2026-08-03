@@ -8,7 +8,7 @@
 3. Nguyễn Ngọc Nam - 2A202601561
 4. Trần Thị Ngọc Lan - 2A202601385
 5. Vũ Tú Quỳnh - 2A202601239
-   **Ngày:** 03/08/2026
+6. **Ngày:** 03/08/2026
 
 > **Nộp 1 bản / nhóm.** Phần cá nhân (hướng tiếp cận, kết quả riêng, dự đoán…) mỗi thành viên nộp riêng trong `REPORT_CANHAN.md`. Chi tiết thang điểm: `docs/SCORING.md`.
 
@@ -48,10 +48,6 @@
 ### Cấu trúc Metadata (Metadata Schema)
 
 | Trường metadata      | Kiểu   | Ví dụ giá trị              | Tại sao hữu ích cho truy xuất (retrieval)?                                                    |
-| -------------------- | ------ | -------------------------- | --------------------------------------------------------------------------------------------- |
-| `doc_id`             | String | `thuvien`, `ktx`           | Định danh duy nhất để tránh trùng lặp, hữu ích khi cần xóa/cập nhật tài liệu.                 |
-| Trường metadata      | Kiểu   | Ví dụ giá trị              | Tại sao hữu ích cho truy xuất (retrieval)?                                                    |
-| -------------------- | ------ | -------------------------- | --------------------------------------------------------------------------------------------- |
 | `doc_id`             | String | `thuvien`, `ktx`           | Định danh duy nhất để tránh trùng lặp, hữu ích khi cần xóa/cập nhật tài liệu.                 |
 | `department`         | String | `Library`, `Registrar`     | Dùng để filter theo phòng ban, giúp mô hình tập trung vào context chính xác nhất.             |
 | `document_version`   | String | `2026.1`                   | Lọc ra văn bản quy định mới nhất, tránh trả lời thông tin cũ đã hết hạn.                      |
