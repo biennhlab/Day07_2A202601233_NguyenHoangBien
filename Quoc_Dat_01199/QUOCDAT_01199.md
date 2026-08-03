@@ -153,17 +153,17 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân của bạn trong gói `src`. **5 câu hỏi này phải trùng với các thành viên cùng nhóm** (xem `REPORT_NHOM.md`).
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
-|---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | Quy định gia hạn sách thư viện như thế nào? | Khối metadata phía trên là template mẫu cho K3 — Dịch vụ thư viện... | 0.007 | Có | [DEMO LLM] Generated answer from prompt preview... |
-| 2 | Hướng dẫn hủy đăng ký lớp học phần? | Khi gặp lỗi trùng lịch, sinh viên điều chỉnh lớp học phần... | -0.035 | Có | [DEMO LLM] Generated answer from prompt preview... |
-| 3 | Điều kiện xin cấp lại thẻ sinh viên là gì? | Thư viện cung cấp mượn tài liệu, mang thẻ định danh hợp lệ... | -0.047 | Có | [DEMO LLM] Generated answer from prompt preview... |
-| 4 | Mức học phí và quy định đóng tiền ra sao? | Quy định học vụ và đóng học phí cho sinh viên đại học... | 0.012 | Có | [DEMO LLM] Generated answer from prompt preview... |
-| 5 | Đối tượng nào được xét học bổng học tập? | Chính sách xét học bổng khuyến khích học tập... | -0.018 | Có | [DEMO LLM] Generated answer from prompt preview... |
+|---|---|---|---|---|---|
+| 1 | Trên hệ thống SIS, trạng thái nào xác nhận sinh viên đã đăng ký môn học thành công, trạng thái “Selected” có ý nghĩa gì và sinh viên kiểm tra lại danh sách môn đã đăng ký ở đâu? | `dangkymonhoc::chunk_9`; nội dung về trạng thái `Registered`, `Selected` và kiểm tra tại `Your Class Schedule`. | 0.777044 | Có | Môn học chỉ đăng ký thành công khi ở trạng thái `Registered`; `Selected` là mới chọn nhưng chưa đăng ký thành công; kiểm tra danh sách tại `Your Class Schedule`. |
+| 2 | Sinh viên năm nhất có bắt buộc ở ký túc xá không? Quy định thay đổi thế nào từ năm hai và trường hợp sức khỏe hoặc tôn giáo được xử lý ra sao? | `ktx::chunk_1`; quy định nghĩa vụ ở KTX của sinh viên năm nhất và các trường hợp đặc cách. | 0.789366 | Có | Sinh viên năm nhất bắt buộc ở KTX; từ năm hai không còn bắt buộc; trường hợp bất khả kháng về sức khỏe hoặc tôn giáo có thể nộp đơn xin đặc cách để nhà trường xem xét. |
+| 3 | Theo quyền mượn tài liệu thư viện dành cho sinh viên đại học, một sinh viên được mượn tối đa bao nhiêu tài liệu, trong bao lâu và được gia hạn mấy lần? | `thuvien::chunk_13`; bảng quyền mượn tài liệu dành cho sinh viên đại học (khi lọc `audience=student`). | 0.735846 | Có | Sinh viên đại học được mượn tối đa 3 tài liệu, trong thời gian 2 tuần và được gia hạn 1 lần. (Cần áp dụng bộ lọc `audience=student` để loại nhiễu từ các nhóm đối tượng khác). |
+| 4 | VinUni cho phép nộp học phí bằng những hình thức nào và thu học phí vào những thời điểm nào trong năm? | `hocphi_hocbong::chunk_2`; hình thức thanh toán học phí và các đợt đóng học phí trong năm. | 0.831314 | Có | Có 2 hình thức: quẹt thẻ Visa trực tiếp tại Phòng Kế toán – Tài chính hoặc chuyển tiền online qua Salesforce; học phí được thu thành 2 đợt/năm vào đầu kỳ Mùa thu và kỳ Mùa xuân. |
+| 5 | Theo quy trình xét tốt nghiệp, sinh viên thường nộp đơn, được xét ra quyết định và nhận bằng chính thức vào những tháng nào? | `totnghiep::chunk_4`; các mốc thời gian trong quy trình xét tốt nghiệp. | 0.836787 | Có | Sinh viên nộp đơn khoảng tháng 4, được xét tốt nghiệp và ra quyết định vào tháng 8, sau đó nhận bằng và bảng điểm chính thức vào tháng 9. |
 
 **Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** **5** / 5
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> Qua quá trình thử nghiệm và trao đổi, tôi nhận thấy việc lựa chọn chiến lược chia nhỏ (chunking) kết hợp lọc siêu dữ liệu (metadata filtering) đóng vai trò quyết định đến độ chính xác của tìm kiếm. Việc gắn các trường thông tin như `audience` và `doc_id` giúp loại bỏ hoàn toàn nhiễu từ các văn bản không thuộc đối tượng quan tâm.
+> Qua quá trình thử nghiệm và so sánh kết quả trong nhóm, tôi nhận thấy chiến lược chia nhỏ văn bản (chunking) kết hợp với lọc siêu dữ liệu (metadata filtering) đóng vai trò quyết định đến độ chính xác của retrieval. Cụ thể, việc gắn các trường thông tin như `audience` (ví dụ `audience=student`) và `category`/`department` giúp loại bỏ hoàn toàn nhiễu từ các văn bản không thuộc đối tượng quan tâm (như quyền mượn của giảng viên/nghiên cứu sinh), từ đó giúp Agent đưa ra câu trả lời chuẩn xác và đầy đủ dữ kiện hơn.
 
 ---
 
