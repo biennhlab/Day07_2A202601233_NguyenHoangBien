@@ -10,8 +10,6 @@
 5. Vũ Tú Quỳnh - 2A202601239
 6. **Ngày:** 03/08/2026
 
-> **Nộp 1 bản / nhóm.** Phần cá nhân (hướng tiếp cận, kết quả riêng, dự đoán…) mỗi thành viên nộp riêng trong `REPORT_CANHAN.md`. Chi tiết thang điểm: `docs/SCORING.md`.
-
 **Tổng điểm phần nhóm: 40** = Lựa chọn tài liệu (10) + Thiết kế chiến lược (15) + Chất lượng truy xuất (10) + Thuyết trình (5).
 
 ---
@@ -169,13 +167,6 @@ Thời gian tìm kiếm BM25 chỉ khoảng 10–14 ms cho 5 query mỗi chiến
 | 3   | Theo quyền mượn tài liệu thư viện dành cho sinh viên đại học, một sinh viên được mượn tối đa bao nhiêu tài liệu, trong bao lâu và được gia hạn mấy lần?                                                                   | Sinh viên đại học được mượn tối đa**3 tài liệu**, trong **2 tuần** và được **gia hạn 1 lần**. _(Lưu ý: Dùng `metadata_filter={"audience": "student"}`)_                                                                                              | `thuvien.md` (2.2. Circulation Privileges)          |
 | 4   | VinUni cho phép nộp học phí bằng những hình thức nào và thu học phí vào những thời điểm nào trong năm?                                                                                                                    | Có hai hình thức: quẹt thẻ Visa trực tiếp tại Phòng Kế toán – Tài chính hoặc chuyển tiền online qua Salesforce. Học phí được đóng thành**2 đợt/năm**, vào đầu kỳ Mùa thu và kỳ Mùa Xuân.                                                             | `hocphi_hocbong.md` (Học phí)                       |
 | 5   | Theo quy trình xét tốt nghiệp, sinh viên thường nộp đơn, được xét ra quyết định và nhận bằng chính thức vào những tháng nào?                                                                                              | Sinh viên nộp đơn khoảng**tháng 4**, được xét tốt nghiệp và ra quyết định vào **tháng 8**, sau đó nhận bằng và bảng điểm vào **tháng 9**.                                                                                                            | `totnghiep.md` (Quy trình xét tốt nghiệp)           |
-| #   | Câu hỏi (Query)                                                                                                                                                                                                           | Câu trả lời chuẩn (Gold Answer)                                                                                                                                                                                                                      | Chunk nào chứa thông tin?                           |
-| -   | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 1   | Trên hệ thống SIS, trạng thái nào xác nhận sinh viên đã đăng ký môn học thành công, trạng thái “Selected” có ý nghĩa gì và sinh viên kiểm tra lại danh sách môn đã đăng ký ở đâu?                                         | Môn học phải có trạng thái**“Registered”**. “Selected” nghĩa là mới chọn nhưng chưa đăng ký thành công. Danh sách môn được kiểm tra tại**“Your Class Schedule”**.                                                                                    | `dangkymonhoc.md` (Cách sử dụng SIS)                |
-| 2   | Sinh viên năm nhất có bắt buộc ở ký túc xá không? Quy định thay đổi thế nào từ năm hai và trường hợp sức khỏe hoặc tôn giáo được xử lý ra sao?                                                                            | Sinh viên năm nhất**bắt buộc** ở ký túc xá; từ năm hai trở đi thì không còn bắt buộc. Trường hợp bất khả kháng về sức khỏe hoặc tôn giáo có thể làm đơn đề nghị đặc cách để Nhà trường xem xét.                                                      | `ktx.md` (Ở ký túc xá có bắt buộc không?)           |
-| 3   | Theo quyền mượn tài liệu thư viện dành cho sinh viên đại học, một sinh viên được mượn tối đa bao nhiêu tài liệu, trong bao lâu và được gia hạn mấy lần?                                                                   | Sinh viên đại học được mượn tối đa**3 tài liệu**, trong **2 tuần** và được **gia hạn 1 lần**. _(Lưu ý: Dùng `metadata_filter={"audience": "student"}`)_                                                                                              | `thuvien.md` (2.2. Circulation Privileges)          |
-| 4   | VinUni cho phép nộp học phí bằng những hình thức nào và thu học phí vào những thời điểm nào trong năm?                                                                                                                    | Có hai hình thức: quẹt thẻ Visa trực tiếp tại Phòng Kế toán – Tài chính hoặc chuyển tiền online qua Salesforce. Học phí được đóng thành**2 đợt/năm**, vào đầu kỳ Mùa thu và kỳ Mùa Xuân.                                                             | `hocphi_hocbong.md` (Học phí)                       |
-| 5   | Theo quy trình xét tốt nghiệp, sinh viên thường nộp đơn, được xét ra quyết định và nhận bằng chính thức vào những tháng nào?                                                                                              | Sinh viên nộp đơn khoảng**tháng 4**, được xét tốt nghiệp và ra quyết định vào **tháng 8**, sau đó nhận bằng và bảng điểm vào **tháng 9**.                                                                                                            | `totnghiep.md` (Quy trình xét tốt nghiệp)           |
 
 ### Tổng hợp chất lượng truy xuất của nhóm
 
@@ -234,13 +225,6 @@ Q3 là lỗi rõ nhất. Fixed Size lấy được 75% dữ kiện trong context
 
 ## Tự Đánh Giá (Phần Nhóm)
 
-| Tiêu chí                                     | Điểm tự đánh giá       |
-| -------------------------------------------- | ---------------------- |
-| Lựa chọn tài liệu (Document Set Quality)     | / 10                   |
-| Thiết kế chiến lược (Strategy Design)        | / 15                   |
-| Chất lượng truy xuất (Retrieval Quality)     | / 10                   |
-| Thuyết trình (Demo)                          | / 5                    |
-| **Tổng phần nhóm**                           | **/ 40**               |
 | Tiêu chí                                     | Điểm tự đánh giá       |
 | -------------------------------------------- | ---------------------- |
 | Lựa chọn tài liệu (Document Set Quality)     | 9/ 10                  |
