@@ -133,11 +133,11 @@ store = build_knowledge_base(
 
 ### So Sánh Giữa Các Thành Viên
 
-| Thành viên  | Chiến lược (Strategy)         | Điểm truy xuất (/10) | Điểm mạnh                                                                         | Điểm yếu                                                                 |
-| ----------- | ----------------------------- | -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Người 4     | Sentence + Gemini Embedding 2 | 5/5 Top-3; 5/5 Top-1 | Chunk mạch lạc, retrieval đúng chủ đề                                             | Một số chunk dài; chưa có metadata`audience`; agent đang dùng `demo_llm` |
-| Vũ Tú Quỳnh | Fixed Size                    | 7/10                 | Kích thước chunk ổn định, dễ embedding, tốc độ xử lý và lưu trữ dễ dự đoán        | Có thể cắt giữa câu hoặc giữa câu hỏi và câu trả lời, làm mất ngữ cảnh   |
-| Vũ Tú Quỳnh | Chunk by header               | 8/10                 | Giữ được heading và nội dung theo từng mục, chunk có tính mạch lạc và dễ truy vết | Kích thước chunk không đồng đều, một số section quá dài                  |
+| Thành viên      | Chiến lược (Strategy)         | Điểm truy xuất (/10) | Điểm mạnh                                                                         | Điểm yếu                                                                 |
+| --------------- | ----------------------------- | -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Nguyễn Ngọc Nam | Sentence + Gemini Embedding 2 | 5/5 Top-3; 5/5 Top-1 | Chunk mạch lạc, retrieval đúng chủ đề                                             | Một số chunk dài; chưa có metadata`audience`; agent đang dùng `demo_llm` |
+| Vũ Tú Quỳnh     | Fixed Size                    | 7/10                 | Kích thước chunk ổn định, dễ embedding, tốc độ xử lý và lưu trữ dễ dự đoán        | Có thể cắt giữa câu hoặc giữa câu hỏi và câu trả lời, làm mất ngữ cảnh   |
+| Vũ Tú Quỳnh     | Chunk by header               | 8/10                 | Giữ được heading và nội dung theo từng mục, chunk có tính mạch lạc và dễ truy vết | Kích thước chunk không đồng đều, một số section quá dài                  |
 
 ### So sánh công bằng giữa các chiến lược
 
