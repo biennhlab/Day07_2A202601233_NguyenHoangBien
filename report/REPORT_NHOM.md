@@ -133,11 +133,16 @@ store = build_knowledge_base(
 
 ### So Sánh Giữa Các Thành Viên
 
-| Thành viên      | Chiến lược (Strategy)         | Điểm truy xuất (/10) | Điểm mạnh                                                                         | Điểm yếu                                                                 |
-| --------------- | ----------------------------- | -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Nguyễn Ngọc Nam | Sentence + Gemini Embedding 2 | 5/5 Top-3; 5/5 Top-1 | Chunk mạch lạc, retrieval đúng chủ đề                                             | Một số chunk dài; chưa có metadata`audience`; agent đang dùng `demo_llm` |
-| Vũ Tú Quỳnh     | Fixed Size                    | 7/10                 | Kích thước chunk ổn định, dễ embedding, tốc độ xử lý và lưu trữ dễ dự đoán        | Có thể cắt giữa câu hoặc giữa câu hỏi và câu trả lời, làm mất ngữ cảnh   |
-| Vũ Tú Quỳnh     | Chunk by header               | 8/10                 | Giữ được heading và nội dung theo từng mục, chunk có tính mạch lạc và dễ truy vết | Kích thước chunk không đồng đều, một số section quá dài                  |
+>  Điểm được lấy từ cùng benchmark gồm 9 tài liệu, 5 câu hỏi, metadata filter, BM25 và `gemini-3.1-flash-lite`.
+
+| Thành viên | Chiến lược | Context@3 | Agent facts | Điểm (/10) | Điểm mạnh | Điểm yếu |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| Vũ Tú Quỳnh | Fixed Size 500/50 | **88%** | **75%** | **7** | Context và dữ kiện Agent cao nhất; overlap giữ thông tin qua ranh giới | Có thể cắt giữa câu; Q2–Q4 chưa đầy đủ |
+| Vũ Tú Quỳnh | Header | 73% | 70% | 6 | Giữ heading, ít chunk và dễ truy vết section | Section dài tới 6,246 ký tự; Q3 thất bại |
+| Trần Thị Ngọc Lan | Recursive 500 | 78% | 73% | **7** | Tách theo ranh giới tự nhiên; kết quả cân bằng và Q2 tốt | Q3 chỉ có một phần context; Agent không lấy được gold fact |
+| Nguyễn Ngọc Nam | Sentence 3 | 73% | 70% | 6 | Giữ ranh giới câu; phù hợp tài liệu FAQ và hướng dẫn | Có chunk vượt 1,000 ký tự; Q3 thất bại |
+
+**Kết luận:** Fixed Size của và Recursive cùng đạt 7/10. Fixed Size đứng đầu theo tiêu chí phụ (`context@3=88%`, `agent_facts=75%`), còn Recursive giữ ranh giới ngữ nghĩa tự nhiên hơn. Header và Sentence cùng đạt 6/10.
 
 ### So sánh công bằng giữa các chiến lược
 
