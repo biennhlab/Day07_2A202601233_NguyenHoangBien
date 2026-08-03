@@ -1,8 +1,8 @@
 # Báo Cáo Cá Nhân — Lab 7: Embedding & Vector Store
 
-**Họ tên:** [Tên sinh viên]
-**Nhóm:** [Tên nhóm]
-**Ngày:** [Ngày nộp]
+**Họ tên:** Nguyễn Hoàng Biên
+**Nhóm:** DMX
+**Ngày:** 03/08/2026
 
 > **Nộp 1 bản / sinh viên.** Phần nhóm (lựa chọn tài liệu, thiết kế chiến lược, bộ câu hỏi đánh giá, demo) nộp chung 1 bản trong `REPORT_NHOM.md`. Chi tiết thang điểm: `docs/SCORING.md`.
 
@@ -15,30 +15,36 @@
 ### Độ tương tự Cosine (Cosine Similarity) (Bài tập 1.1)
 
 **Độ tương tự cosine cao (High cosine similarity) nghĩa là gì?**
-> độ tương tự cao có nghĩa là các chunk có ngữ nghĩa gần giống nhau các vector sau khi embbed có góc rất nhỏ nên phân bố sẽ gần nhau hơn 
+
+> độ tương tự cao có nghĩa là các chunk có ngữ nghĩa gần giống nhau các vector sau khi embbed có góc rất nhỏ nên phân bố sẽ gần nhau hơn
 
 **Ví dụ có độ tương tự CAO:**
+
 - Câu A: con chó ăn xương
 - Câu B: con mèo ăn cá
 - Tại sao tương đồng: vì chó và mèo đều trong cùng 1 domain động vật nên độ tương đồng cao
 
 **Ví dụ có độ tương tự THẤP:**
+
 - Câu A: con mèo ăn cá
 - Câu B: xe máy chạy nhanh
-- Tại sao khác: vì con mèo và xe máy khác domain (sinh học và cơ khí giao thông) nên độ tương đồng thấp và góc của 2 vector đại diện sẽ lớn nên phân bố của 2 vector này sẽ xa nhau hơn 
+- Tại sao khác: vì con mèo và xe máy khác domain (sinh học và cơ khí giao thông) nên độ tương đồng thấp và góc của 2 vector đại diện sẽ lớn nên phân bố của 2 vector này sẽ xa nhau hơn
 
 **Tại sao độ tương tự cosine (cosine similarity) được ưu tiên hơn khoảng cách Euclid (Euclidean distance) cho text embeddings?**
+
 > bởi vì cosine similarity nó không bị phụ thuộc vào độ dài của chunk mà nó phụ thuộc và ngữ nghĩa của chunk nên khi 2 câu cùng nói về con chó dù dộ dài nó có khác biệt lớn thì vector đại diện của 2 câu này vẫn sẽ có góc rất nhỏ. Ngược lại thì edulidean distance sẽ có góc rất lớn đối với 2 câu trên.
 
 ### Bài toán tính toán Chunking (Bài tập 1.2)
 
 **Tài liệu 10,000 ký tự, chunk_size=500, overlap=50. Bao nhiêu chunks?**
->   chunk_size=500, overlap=50 => step = 500 - 50 = 450.
-    số chunk = [10000 - 500 / 450] + 1 = 23
+
+> chunk_size=500, overlap=50 => step = 500 - 50 = 450.
+> số chunk = [10000 - 500 / 450] + 1 = 23
 > *Đáp án:* 23
 
 **Nếu độ chồng chéo (overlap) tăng lên 100, số lượng chunk thay đổi thế nào? Tại sao muốn độ chồng chéo nhiều hơn?**
-> nếu overlap tăng lên 100 thì step sẽ giảm xuống 400 dẫn đến số lượng chunk nhiều hơn. Muốn độ chồng chéo nhiều hơn vì nó sẽ khiến cho các chunk sau sẽ giữ lại context của các chunk trước nhiều hơn và llm không bị mất thông tin và có thể sinh ra câu trả lời hiệu quả hơn 
+
+> nếu overlap tăng lên 100 thì step sẽ giảm xuống 400 dẫn đến số lượng chunk nhiều hơn. Muốn độ chồng chéo nhiều hơn vì nó sẽ khiến cho các chunk sau sẽ giữ lại context của các chunk trước nhiều hơn và llm không bị mất thông tin và có thể sinh ra câu trả lời hiệu quả hơn
 
 ---
 
@@ -49,22 +55,27 @@ Giải thích cách tiếp cận của bạn khi lập trình (implement) các p
 ### Các hàm chia nhỏ (Chunking Functions)
 
 **`SentenceChunker.chunk`** — hướng tiếp cận:
+
 > Sử dụng biểu thức chính quy `(?<=[.!?])\s+|\.\n` (kết hợp lookbehind) để cắt câu mà vẫn giữ lại được dấu kết thúc. Các ngoại lệ như đầu vào rỗng (empty string) hoặc chứa khoảng trắng thừa được xử lý gọn gàng bằng lệnh kiểm tra if ngay từ đầu và hàm `strip()` trước khi gom các câu thành chunk.
 
 **`RecursiveChunker.chunk` / `_split`** — hướng tiếp cận:
+
 > Thuật toán đệ quy cắt văn bản dựa trên danh sách dấu phân cách có mức độ ưu tiên giảm dần (từ đoạn văn `\n\n` xuống khoảng trắng `" "`). Base case (trường hợp cơ sở) để dừng đệ quy là khi văn bản đã ngắn hơn `chunk_size`, hoặc khi đã hết danh sách dấu phân cách mà đoạn vẫn quá dài (lúc này tiến hành cắt cứng - hard slice).
 
 ### Lớp EmbeddingStore
 
 **`add_documents` + `search`** — hướng tiếp cận:
+
 > Các tài liệu được embedding và lưu song song: đẩy vào collection của ChromaDB (nếu khả dụng) hoặc lưu in-memory dưới dạng List of Dicts. Khi tìm kiếm, vector của query sẽ được tính Cosine Similarity (hoặc truy vấn trực tiếp qua ChromaDB) với từng record để trả về danh sách top-K các chunk có độ tương tự giảm dần.
 
 **`search_with_filter` + `delete_document`** — hướng tiếp cận:
+
 > Việc lọc (filter) qua metadata luôn được thực hiện TRƯỚC để tối ưu không gian tìm kiếm, sau đó mới tính độ tương tự trên tập kết quả thu gọn. Khi xóa, tôi dùng list comprehension (hoặc API của ChromaDB) để duyệt và loại bỏ tất cả các bản ghi có chứa `doc_id` hoặc `id` trùng khớp.
 
 ### Tác tử KnowledgeBaseAgent
 
 **`answer`** — hướng tiếp cận:
+
 > Hàm gọi tới store để lấy top-K chunk liên quan nhất. Ngữ cảnh (context) được đưa vào prompt bằng cách nối chuỗi (join) các đoạn text tìm được, kèm theo phần định hướng LLM rõ ràng kiểu: "Dựa vào ngữ cảnh dưới đây... Hãy trả lời câu hỏi sau...".
 
 ---
@@ -136,15 +147,16 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 ## 4. Dự đoán độ tương tự (Similarity Predictions) — Cá nhân (5 điểm)
 
-| Cặp | Câu A | Câu B | Dự đoán | Điểm thực tế | Đúng? |
-|------|-----------|-----------|---------|--------------|-------|
-| 1 | "Sinh viên có thể mượn tối đa 5 cuốn sách." | "Quy định thư viện cho phép mượn 5 tài liệu." | Cao | ~0.92 | Đúng |
-| 2 | "Đăng ký môn học bắt đầu từ ngày 1/8." | "Hôm nay thời tiết Hà Nội rất đẹp." | Thấp | ~0.08 | Đúng |
-| 3 | "Sinh viên phải đóng học phí trước 15/9." | "Hạn chót thanh toán học phí là 15 tháng 9." | Cao | ~0.95 | Đúng |
-| 4 | "VinUni yêu cầu sinh viên năm nhất ở KTX." | "KTX VinUni có điều hòa và máy giặt." | Thấp | ~0.55 | Đúng |
-| 5 | "Tôi muốn hủy đăng ký môn Cơ sở Dữ liệu." | "Sinh viên rút môn Database Foundation phải làm đơn." | Cao | ~0.84 | Đúng |
+| Cặp | Câu A                                               | Câu B                                                       | Dự đoán | Điểm thực tế | Đúng? |
+| ---- | ---------------------------------------------------- | ------------------------------------------------------------ | ---------- | ---------------- | ------- |
+| 1    | "Sinh viên có thể mượn tối đa 5 cuốn sách." | "Quy định thư viện cho phép mượn 5 tài liệu."       | Cao        | ~0.92            | Đúng  |
+| 2    | "Đăng ký môn học bắt đầu từ ngày 1/8."     | "Hôm nay thời tiết Hà Nội rất đẹp."                  | Thấp      | ~0.08            | Đúng  |
+| 3    | "Sinh viên phải đóng học phí trước 15/9."    | "Hạn chót thanh toán học phí là 15 tháng 9."          | Cao        | ~0.95            | Đúng  |
+| 4    | "VinUni yêu cầu sinh viên năm nhất ở KTX."     | "KTX VinUni có điều hòa và máy giặt."                 | Thấp      | ~0.55            | Đúng  |
+| 5    | "Tôi muốn hủy đăng ký môn Cơ sở Dữ liệu." | "Sinh viên rút môn Database Foundation phải làm đơn." | Cao        | ~0.84            | Đúng  |
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn ý nghĩa?**
+
 > Kết quả bất ngờ nhất là cặp số 4. Dù có chung nhiều từ khóa (KTX, VinUni), điểm tương đồng lại khá thấp vì mô hình embedding hiểu được khác biệt về mặt ngữ nghĩa: một bên là "quy định bắt buộc", bên kia là "cơ sở vật chất". Điều này chứng tỏ embedding lưu giữ ý nghĩa thực sự của câu (semantic) chứ không chỉ đơn thuần là đếm từ khóa (keyword matching).
 
 ---
@@ -153,28 +165,29 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân của bạn trong gói `src`. **5 câu hỏi này phải trùng với các thành viên cùng nhóm** (xem `REPORT_NHOM.md`).
 
-| # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
-|---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | "Làm sao để gia hạn sách thư viện?" | Hướng dẫn mượn trả và gia hạn sách thư viện VinUni | 0.85 | Có | SV có thể tự gia hạn 1 lần trên portal của thư viện. |
-| 2 | "Hạn chót nộp học phí là khi nào?" | Quy định thời hạn nộp học phí Học kỳ Thu | 0.91 | Có | Hạn chót nộp học phí Học kỳ Thu là ngày 15/9. |
-| 3 | "Đăng ký ở KTX ở đâu?" | Cổng thông tin đăng ký KTX sinh viên | 0.88 | Có | Bạn cần đăng nhập vào hệ thống quản lý KTX để nộp đơn. |
-| 4 | "Môn cấu trúc dữ liệu mấy tín chỉ?" | Đề cương chi tiết môn Cấu trúc Dữ liệu | 0.92 | Có | Môn Cấu trúc Dữ liệu có tổng cộng 4 tín chỉ. |
-| 5 | "Xe bus VinUni chạy mấy giờ?" | Lịch trình tuyến xe bus nội khu trường | 0.87 | Có | Xe bus hoạt động liên tục từ 6h00 sáng đến 22h00 đêm. |
+| # | Câu hỏi (Query)                           | Top-1 Chunk truy xuất được (tóm tắt)                    | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt)                                 |
+| - | ------------------------------------------- | ------------------------------------------------------------- | ------------ | --------------------------------- | --------------------------------------------------------------------- |
+| 1 | "Làm sao để gia hạn sách thư viện?"  | Hướng dẫn mượn trả và gia hạn sách thư viện VinUni | 0.85         | Có                               | SV có thể tự gia hạn 1 lần trên portal của thư viện.         |
+| 2 | "Hạn chót nộp học phí là khi nào?"   | Quy định thời hạn nộp học phí Học kỳ Thu             | 0.91         | Có                               | Hạn chót nộp học phí Học kỳ Thu là ngày 15/9.                |
+| 3 | "Đăng ký ở KTX ở đâu?"               | Cổng thông tin đăng ký KTX sinh viên                    | 0.88         | Có                               | Bạn cần đăng nhập vào hệ thống quản lý KTX để nộp đơn. |
+| 4 | "Môn cấu trúc dữ liệu mấy tín chỉ?" | Đề cương chi tiết môn Cấu trúc Dữ liệu              | 0.92         | Có                               | Môn Cấu trúc Dữ liệu có tổng cộng 4 tín chỉ.                |
+| 5 | "Xe bus VinUni chạy mấy giờ?"            | Lịch trình tuyến xe bus nội khu trường                  | 0.87         | Có                               | Xe bus hoạt động liên tục từ 6h00 sáng đến 22h00 đêm.      |
 
 **Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** 5 / 5
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
+
 > Điều hay nhất là tôi học được cách sử dụng Metadata Filtering hiệu quả để thu hẹp phạm vi tìm kiếm (vd: `department=Library`), giúp loại bỏ nhiễu khi các từ khóa quá chung chung. Hơn nữa, việc sử dụng RecursiveChunker thực sự giữ được ngữ cảnh tự nhiên hơn nhiều so với FixedSizeChunker khi ngắt câu.
 
 ---
 
 ## Tự Đánh Giá (Phần Cá Nhân)
 
-| Tiêu chí | Điểm tự đánh giá |
-|----------|-------------------|
-| Khởi động (Warm-up) | 5 / 5 |
-| Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
-| Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | 10 / 10 |
-| **Tổng phần cá nhân** | **60 / 60** |
+| Tiêu chí                                           | Điểm tự đánh giá |
+| ---------------------------------------------------- | ---------------------- |
+| Khởi động (Warm-up)                               | 5 / 5                  |
+| Hướng tiếp cận của tôi (My Approach)           | 10 / 10                |
+| Hoàn thiện code (Core Implementation — tests)     | 30 / 30                |
+| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5                  |
+| Kết quả truy xuất của tôi (Competition Results) | 10 / 10                |
+| **Tổng phần cá nhân**                      | **60 / 60**      |
