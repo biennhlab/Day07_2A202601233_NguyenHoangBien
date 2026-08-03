@@ -55,8 +55,6 @@
 
 ## 2. Thiết kế chiến lược (Strategy Design) — Nhóm (15 điểm)
 
-> Mỗi thành viên thử **một chiến lược khác nhau** trên cùng bộ tài liệu; nhóm tổng hợp và so sánh ở đây.
-
 ### Phân tích đường cơ sở (Baseline Analysis)
 
 Chạy `ChunkingStrategyComparator().compare()` trên 2-3 tài liệu:
@@ -91,8 +89,8 @@ header_chunks = HeaderChunker().chunk(text)
 
 **Thành viên 2 — Trần Thị Ngọc Lan**
 
-- **Loại chiến lược: Recursive**
-- **Mô tả & lý do chọn: Chiến lược này ưu tiên tách tài liệu tại các ranh giới tự nhiên như đoạn văn, tiêu đề Markdown và các dòng ngắt trước khi chuyển sang các dấu phân cách nhỏ hơn. Điều này giúp giữ được ngữ cảnh của từng phần nội dung, tránh cắt ngang giữa các ý tưởng liên quan và tạo ra các chunk mạch lạc hơn cho quá trình retrieval. Vì tài liệu trong K3_university có cấu trúc rõ ràng theo mục, tiêu đề và nội dung, nên RecursiveChunker phù hợp để bảo toàn ý nghĩa của từng phần.\*\***
+- **Loại chiến lược:** Recursive
+- **Mô tả & lý do chọn:** Chiến lược này ưu tiên tách tài liệu tại các ranh giới tự nhiên như đoạn văn, tiêu đề Markdown và các dòng ngắt trước khi chuyển sang các dấu phân cách nhỏ hơn. Điều này giúp giữ được ngữ cảnh của từng phần nội dung, tránh cắt ngang giữa các ý tưởng liên quan và tạo ra các chunk mạch lạc hơn cho quá trình retrieval. Vì tài liệu trong K3_university có cấu trúc rõ ràng theo mục, tiêu đề và nội dung, nên RecursiveChunker phù hợp để bảo toàn ý nghĩa của từng phần.
 - **Code snippet (nếu custom):**
 
 ```python
