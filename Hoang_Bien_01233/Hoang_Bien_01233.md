@@ -1,4 +1,4 @@
-# Báo Cáo Cá Nhân — Lab 7: Embedding & Vector Store
+﻿# Báo Cáo Cá Nhân — Lab 7: Embedding & Vector Store
 
 **Họ tên:** Nguyễn Hoàng Biên
 **Nhóm:** DMX
@@ -165,19 +165,24 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân của bạn trong gói `src`. **5 câu hỏi này phải trùng với các thành viên cùng nhóm** (xem `REPORT_NHOM.md`).
 
-| # | Câu hỏi (Query)                           | Top-1 Chunk truy xuất được (tóm tắt)                    | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt)                                 |
-| - | ------------------------------------------- | ------------------------------------------------------------- | ------------ | --------------------------------- | --------------------------------------------------------------------- |
-| 1 | "Làm sao để gia hạn sách thư viện?"  | Hướng dẫn mượn trả và gia hạn sách thư viện VinUni | 0.85         | Có                               | SV có thể tự gia hạn 1 lần trên portal của thư viện.         |
-| 2 | "Hạn chót nộp học phí là khi nào?"   | Quy định thời hạn nộp học phí Học kỳ Thu             | 0.91         | Có                               | Hạn chót nộp học phí Học kỳ Thu là ngày 15/9.                |
-| 3 | "Đăng ký ở KTX ở đâu?"               | Cổng thông tin đăng ký KTX sinh viên                    | 0.88         | Có                               | Bạn cần đăng nhập vào hệ thống quản lý KTX để nộp đơn. |
-| 4 | "Môn cấu trúc dữ liệu mấy tín chỉ?" | Đề cương chi tiết môn Cấu trúc Dữ liệu              | 0.92         | Có                               | Môn Cấu trúc Dữ liệu có tổng cộng 4 tín chỉ.                |
-| 5 | "Xe bus VinUni chạy mấy giờ?"            | Lịch trình tuyến xe bus nội khu trường                  | 0.87         | Có                               | Xe bus hoạt động liên tục từ 6h00 sáng đến 22h00 đêm.      |
+| # | Câu hỏi benchmark của nhóm | Top-1 chunk (tóm tắt) | BM25 | Top-3 liên quan? | Câu trả lời Agent (tóm tắt) | Điểm rubric |
+| ---: | --- | --- | ---: | :---: | --- | ---: |
+| 1 | Trên hệ thống SIS, trạng thái nào xác nhận sinh viên đã đăng ký môn học thành công, trạng thái “Selected” có ý nghĩa gì và sinh viên kiểm tra lại danh sách môn đã đăng ký ở đâu? | `dangkymonhoc::7` — phần thêm môn, đăng ký và xác nhận lịch học | 17.8145 | Có | Trả lời đủ: trạng thái `Registered`; `Selected` là chưa đăng ký thành công; kiểm tra tại `Your Class Schedule`. | 2/2 |
+| 2 | Sinh viên năm nhất có bắt buộc ở ký túc xá không? Quy định thay đổi thế nào từ năm hai và trường hợp sức khỏe hoặc tôn giáo được xử lý ra sao? | `ktx::2` — quy định ở KTX theo năm học và trường hợp đặc cách | 29.0290 | Có | Nêu đúng phần lớn quy định năm nhất, năm hai và ngoại lệ sức khỏe/tôn giáo, nhưng còn thiếu một dữ kiện/diễn đạt chuẩn trong gold answer. | 1/2 |
+| 3 | Theo quyền mượn tài liệu thư viện dành cho sinh viên đại học, một sinh viên được mượn tối đa bao nhiêu tài liệu, trong bao lâu và được gia hạn mấy lần? | `thuvien::21` — quy định sử dụng tài nguyên điện tử, không phải bảng quyền mượn | 1.8209 | Không | Context không chứa các dữ kiện “3 tài liệu, 2 tuần, gia hạn 1 lần”, nên Agent không thể trả lời đúng. | 0/2 |
+| 4 | VinUni cho phép nộp học phí bằng những hình thức nào và thu học phí vào những thời điểm nào trong năm? | `hocphi_hocbong::3` — hình thức nộp học phí | 13.8901 | Có | Nêu được phần lớn thông tin Visa, Salesforce và kỳ thu học phí, nhưng chưa đủ toàn bộ dữ kiện chuẩn. | 1/2 |
+| 5 | Theo quy trình xét tốt nghiệp, sinh viên thường nộp đơn, được xét ra quyết định và nhận bằng chính thức vào những tháng nào? | `totnghiep::5` — thời gian và quy trình xét tốt nghiệp | 20.3940 | Có | Trả lời đủ: nộp đơn tháng 4, xét và ra quyết định tháng 8, nhận bằng tháng 9. | 2/2 |
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** 5 / 5
+**Tổng điểm theo `docs/SCORING.md`: 6/10.**
 
-**Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
+- Có chunk liên quan trong Top-3: **4/5 câu**.
+- Agent trả lời đầy đủ gold answer: **2/5 câu** (Q1 và Q5).
+- Độ phủ dữ kiện trung bình trong Top-3: **73%**.
+- Độ phủ dữ kiện trung bình trong Agent Answer: **73%**.
 
-> Điều hay nhất là tôi học được cách sử dụng Metadata Filtering hiệu quả để thu hẹp phạm vi tìm kiếm (vd: `department=Library`), giúp loại bỏ nhiễu khi các từ khóa quá chung chung. Hơn nữa, việc sử dụng RecursiveChunker thực sự giữ được ngữ cảnh tự nhiên hơn nhiều so với FixedSizeChunker khi ngắt câu.
+**Failure case chính:** Q3. Metadata filter đưa truy vấn vào đúng tài liệu `thuvien.md`, nhưng BM25 xếp section tài nguyên điện tử cao hơn bảng `Circulation Privileges`. Nguyên nhân là query tiếng Việt trong khi bảng dùng các cụm tiếng Anh như `Undergraduate Students`, `2 weeks` và `1 time`.
+
+**Điều hay nhất tôi học được từ các thành viên khác:** Fixed Size có overlap giữ dữ kiện bảng tốt hơn ở Q3, trong khi Recursive thuần đạt chất lượng tổng thể cao hơn Header+Recursive một chút. Với tài liệu song ngữ hoặc bảng Markdown, chỉ tách theo heading chưa đủ; cần bổ sung metadata song ngữ, lặp heading trong chunk con hoặc chuẩn hóa bảng thành câu văn dễ tìm kiếm.
 
 ---
 
@@ -187,7 +192,7 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 | ---------------------------------------------------- | ---------------------- |
 | Khởi động (Warm-up)                               | 5 / 5                  |
 | Hướng tiếp cận của tôi (My Approach)           | 10 / 10                |
-| Hoàn thiện code (Core Implementation — tests)     | 30 / 30                |
+| Hoàn thiện code (Core Implementation — tests)     | 24 / 30                |
 | Dự đoán độ tương tự (Similarity Predictions) | 5 / 5                  |
-| Kết quả truy xuất của tôi (Competition Results) | 10 / 10                |
-| **Tổng phần cá nhân**                      | **60 / 60**      |
+| Kết quả truy xuất của tôi (Competition Results) | 6 / 10                 |
+| **Tổng phần cá nhân**                      | **50 / 60**      |
